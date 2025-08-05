@@ -17,7 +17,6 @@ import {
 const MedicalPillGame: React.FC = () => {
   const t = useTranslations('game');
   const language = useLocale();
-  const isRtl: boolean = language === 'fa';
   const router = useRouter();
   const pathname = usePathname();
 
@@ -250,7 +249,7 @@ const MedicalPillGame: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen ${isRtl ? 'rtl' : 'ltr'} bg-gradient-to-br from-blue-600 via-purple-600 to-teal-600 p-4`}
+      className={`min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-teal-600 p-4`}
     >
       <div className="mx-auto max-w-7xl">
         <div className="mb-6 text-center">
