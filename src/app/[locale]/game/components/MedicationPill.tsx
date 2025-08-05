@@ -1,7 +1,7 @@
 'use client';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { Medication } from './medicalData';
+import { Medication } from '../lib/medicalData';
 
 type MedicationPillProps = {
   med: Medication;
