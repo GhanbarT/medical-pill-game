@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+button {
+  cursor: pointer;
+}
+
 .rtl {
   direction: rtl;
   text-align: right;
