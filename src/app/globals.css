@@ -1,8 +1,17 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
 
+.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+@custom-variant dark (&:is(.dark *));
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

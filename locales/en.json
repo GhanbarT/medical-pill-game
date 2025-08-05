@@ -1,0 +1,57 @@
+{
+  "game": {
+    "title": "Medical Pill Sorting Game",
+    "instructions": "Match the correct medications to their medical conditions!",
+    "score": "Score: {score}",
+    "reset": "Reset Game",
+    "gameComplete": "Game Complete!",
+    "availableMeds": "Available Medications",
+    "howToPlayTitle": "How to Play & Scoring",
+    "scoringSystem": "Scoring System",
+    "instructionsTitle": "Instructions",
+    "correctPlacement": "✅ Correct medication placement: +50 points",
+    "wrongPlacement": "❌ Wrong medication placement: -25 points",
+    "removePill": "🗑️ Remove medication: -10 points",
+    "instruction1": "• Match medications to their correct medical conditions",
+    "instruction2": "• Each condition needs 2 specific medications",
+    "instruction3": "• Drag pills from the medication library to condition slots",
+    "instruction4": "• Click on placed pills to remove them",
+    "feedback": {
+      "correct": "✅ Correct! {med} treats {condition}",
+      "wrong": "❌ Wrong! {med} doesn't treat {condition}",
+      "perfect": "🎉 Perfect! All medications correctly matched!",
+      "completed": "Game completed! {correct}/8 medications correctly placed.",
+      "occupied": "This slot is already occupied!",
+      "removed": "Medication removed"
+    },
+    "conditions": {
+      "Hypertension": "Hypertension",
+      "Diabetes": "Diabetes",
+      "Depression": "Depression",
+      "Asthma": "Asthma"
+    },
+    "meds": {
+      "Lisinopril": "Lisinopril",
+      "Amlodipine": "Amlodipine",
+      "Metformin": "Metformin",
+      "Insulin": "Insulin",
+      "Sertraline": "Sertraline",
+      "Fluoxetine": "Fluoxetine",
+      "Albuterol": "Albuterol",
+      "Budesonide": "Budesonide",
+      "Ibuprofen": "Ibuprofen",
+      "Acetaminophen": "Acetaminophen"
+    },
+    "categories": {
+      "Hypertension": "Hypertension",
+      "Diabetes": "Diabetes",
+      "Depression": "Depression",
+      "Asthma": "Asthma",
+      "Pain Relief": "Pain Relief"
+    },
+    "needs": "Needs: {meds}",
+    "dropHere": "Drop pill here",
+    "removeTitle": "Click to remove",
+    "medDescription": "{med} - Used for {category}"
+  }
+}
