@@ -1,7 +1,7 @@
 'use client';
-import { useTranslations } from 'next-intl';
+import {useTranslations} from 'next-intl';
 import React from 'react';
-import { Medication } from '../lib/medicalData';
+import {Medication} from '../lib/medicalData';
 
 type MedicationPillProps = {
   med: Medication;
@@ -19,7 +19,7 @@ const MedicationPill: React.FC<MedicationPillProps> = ({
 
   return (
     <div
-      draggable
+      draggable="true"
       onDragStart={(e) => onDragStart(e, med)}
       className={`${med.color} relative transform cursor-move rounded-full border-2 border-white/30 px-3 py-2 font-semibold text-white shadow-lg transition-all duration-200 select-none hover:scale-105 hover:shadow-xl`}
       style={{
