@@ -17,8 +17,8 @@
     "instruction3": "• Drag pills from the medication library to condition slots",
     "instruction4": "• Click on placed pills to remove them",
     "feedback": {
-      "correct": "✅ Correct! {med} treats {condition}",
-      "wrong": "❌ Wrong! {med} doesn't treat {condition}",
+      "correct": "Correct! {med} treats {condition}",
+      "wrong": "Wrong! {med} doesn't treat {condition}",
       "perfect": "🎉 Perfect! All medications correctly matched!",
       "completed": "Game completed! {correct}/8 medications correctly placed.",
       "occupied": "This slot is already occupied!",

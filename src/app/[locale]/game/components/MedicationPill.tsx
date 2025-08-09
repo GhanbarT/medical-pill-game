@@ -1,7 +1,7 @@
 'use client';
-import {useTranslations} from 'next-intl';
+import { useTranslations } from 'next-intl';
 import React from 'react';
-import {Medication} from '../lib/medicalData';
+import { Medication } from '../lib/medicalData';
 
 type MedicationPillProps = {
   med: Medication;
@@ -21,10 +21,10 @@ const MedicationPill: React.FC<MedicationPillProps> = ({
     <div
       draggable="true"
       onDragStart={(e) => onDragStart(e, med)}
-      className={`${med.color} relative transform cursor-move rounded-full border-2 border-white/30 px-3 py-2 font-semibold text-white shadow-lg transition-all duration-200 select-none hover:scale-105 hover:shadow-xl`}
+      className={`${med.color} relative transform cursor-move rounded-full border border-white/30 px-2 py-1.5 font-semibold text-white shadow-md transition-all duration-200 select-none hover:scale-105 hover:shadow-lg`}
       style={{
         background: `linear-gradient(145deg, ${colorClasses})`,
-        minWidth: '120px',
+        minWidth: '90px',
         textAlign: 'center',
       }}
       title={t('medDescription', {
@@ -32,13 +32,13 @@ const MedicationPill: React.FC<MedicationPillProps> = ({
         category: t(`categories.${med.category}`),
       })}
     >
-      <div className="text-xs font-bold md:text-sm">
+      <div className="text-[10px] font-bold md:text-xs">
         {t(`meds.${med.name}`)}
       </div>
-      <div className="text-xs opacity-80">
+      <div className="text-[10px] opacity-80 md:text-xs">
         {t(`categories.${med.category}`)}
       </div>
-      <div className="absolute top-1 left-1 h-2 w-2 rounded-full bg-white/40"></div>
+      <div className="absolute top-2.5 left-1.5 h-1.5 w-1.5 rounded-full bg-white/40"></div>
     </div>
   );
 };

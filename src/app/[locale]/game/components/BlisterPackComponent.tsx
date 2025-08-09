@@ -27,10 +27,10 @@ const BlisterPackComponent: React.FC<BlisterPackProps> = ({
 
   return (
     <div className="relative w-full">
-      <div className="relative h-full overflow-hidden rounded-2xl border-2 border-gray-400 bg-gradient-to-b from-gray-200 via-gray-100 to-gray-300 p-4 shadow-xl">
-        <div className="relative z-10 mb-4 text-center">
-          <div className="mb-2 text-2xl">{pack.icon}</div>
-          <h3 className="inline-block rounded-lg border bg-white/90 px-3 py-2 text-sm font-bold text-gray-800 shadow-sm backdrop-blur-sm">
+      <div className="relative h-full overflow-hidden rounded-2xl border-2 border-gray-400 bg-gradient-to-b from-gray-200 via-gray-100 to-gray-300 p-3 shadow-xl">
+        <div className="relative z-10 mb-2 text-center">
+          <div className="mb-1 text-xl">{pack.icon}</div>
+          <h3 className="inline-block rounded-md border bg-white/90 px-2 py-1 text-xs font-bold text-gray-800 shadow-sm backdrop-blur-sm">
             {t(`conditions.${pack.condition}`)}
           </h3>
           <div className="mt-2 text-xs font-medium text-gray-700">
@@ -39,7 +39,7 @@ const BlisterPackComponent: React.FC<BlisterPackProps> = ({
             })}
           </div>
         </div>
-        <div className="relative z-10 space-y-3">
+        <div className="relative z-10 space-y-2">
           {pack.slots.map((slot) => (
             <BlisterSlot
               key={slot.id}

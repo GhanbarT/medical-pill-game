@@ -1,10 +1,10 @@
 'use client';
-import { usePathname } from '@/i18n/navigation';
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import BlisterPackComponent from './components/BlisterPackComponent';
+import { GameControls } from './components/GameControls';
 import HowToPlay from './components/HowToPlay';
 import MedicationPill from './components/MedicationPill';
 import {
@@ -16,61 +16,29 @@ import {
 
 const MedicalPillGame: React.FC = () => {
   const t = useTranslations('game');
-  const language = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
 
-  const changeLanguage = (locale: string) => {
-    if (locale === language) return;
-    router.push(`/${locale}${pathname}`);
-  };
+  const [score, setScore] = useState(0);
+  const increaseScore = (amount: number) => setScore((prev) => prev + amount);
 
+  const [medsList, setMedsList] = useState<Medication[]>(availableMeds);
   const [draggedItem, setDraggedItem] = useState<Medication | null>(null);
-  const [score, setScore] = useState<number>(0);
   const [gameCompleted, setGameCompleted] = useState<boolean>(false);
 
-  const [blisterPacks, setBlisterPacks] = useState<BlisterPack[]>([
-    {
-      id: 1,
-      condition: medicalData[1].condition,
-      icon: medicalData[1].icon,
-      correctMeds: medicalData[1].correctMeds,
+  const [blisterPacks, setBlisterPacks] = useState<BlisterPack[]>(
+    medicalData.map((data, index) => ({
+      id: index + 1,
+      condition: data.condition,
+      icon: data.icon,
+      correctMeds: data.correctMeds,
       slots: [
-        { id: 1, pill: null, isCorrect: null },
-        { id: 2, pill: null, isCorrect: null },
+        { id: index * 2 + 1, pill: null, isCorrect: null },
+        { id: index * 2 + 2, pill: null, isCorrect: null },
       ],
-    },
-    {
-      id: 2,
-      condition: medicalData[2].condition,
-      icon: medicalData[2].icon,
-      correctMeds: medicalData[2].correctMeds,
-      slots: [
-        { id: 3, pill: null, isCorrect: null },
-        { id: 4, pill: null, isCorrect: null },
-      ],
-    },
-    {
-      id: 3,
-      condition: medicalData[3].condition,
-      icon: medicalData[3].icon,
-      correctMeds: medicalData[3].correctMeds,
-      slots: [
-        { id: 5, pill: null, isCorrect: null },
-        { id: 6, pill: null, isCorrect: null },
-      ],
-    },
-    {
-      id: 4,
-      condition: medicalData[4].condition,
-      icon: medicalData[4].icon,
-      correctMeds: medicalData[4].correctMeds,
-      slots: [
-        { id: 7, pill: null, isCorrect: null },
-        { id: 8, pill: null, isCorrect: null },
-      ],
-    },
-  ]);
+    })),
+  );
+
+  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
+  const [hasOpenedHowToPlay, setHasOpenedHowToPlay] = useState(false);
 
   const getColorClasses = (color: string): string => {
     const colorMap: { [key: string]: string } = {
@@ -88,37 +56,14 @@ const MedicalPillGame: React.FC = () => {
     return colorMap[color] || '#6b7280, #4b5563';
   };
 
-  const handleDragStart = (
-    e: React.DragEvent<HTMLDivElement>,
-    med: Medication,
-  ): void => {
-    setDraggedItem(med);
-    e.dataTransfer.effectAllowed = 'move';
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>): void => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-  };
-
   const showFeedback = (
     message: string,
     variant: 'success' | 'error' | 'warning' = 'success',
-  ): void => {
-    switch (variant) {
-      case 'success':
-        toast.success(message);
-        break;
-      case 'error':
-        toast.error(message);
-        break;
-      case 'warning':
-        toast.warning(message);
-        break;
-    }
+  ) => {
+    toast[variant](message);
   };
 
-  const checkGameCompletion = (updatedPacks: BlisterPack[]): void => {
+  const checkGameCompletion = (updatedPacks: BlisterPack[]) => {
     const allSlotsFilled = updatedPacks.every((pack) =>
       pack.slots.every((slot) => slot.pill !== null),
     );
@@ -144,84 +89,103 @@ const MedicalPillGame: React.FC = () => {
     e: React.DragEvent<HTMLDivElement>,
     packId: number,
     slotId: number,
-  ): void => {
+  ) => {
     e.preventDefault();
-    if (draggedItem) {
-      const targetPack = blisterPacks.find((pack) => pack.id === packId);
-      if (!targetPack) return;
-      const targetSlot = targetPack.slots.find((slot) => slot.id === slotId);
-      if (!targetSlot) return;
+    if (!draggedItem) return;
 
-      if (targetSlot.pill !== null) {
-        showFeedback(t('feedback.occupied'), 'warning');
-        setDraggedItem(null);
-        return;
-      }
-
-      const isCorrectMed = targetPack.correctMeds.includes(draggedItem.name);
-      setBlisterPacks((prevPacks) => {
-        const updatedPacks = prevPacks.map((pack) =>
-          pack.id === packId
-            ? {
-                ...pack,
-                slots: pack.slots.map((slot) =>
-                  slot.id === slotId
-                    ? { ...slot, pill: draggedItem, isCorrect: isCorrectMed }
-                    : slot,
-                ),
-              }
-            : pack,
-        );
-        setTimeout(() => checkGameCompletion(updatedPacks), 100);
-        return updatedPacks;
-      });
-
-      if (isCorrectMed) {
-        setScore((prevScore) => prevScore + 50);
-        showFeedback(
-          t('feedback.correct', {
-            med: t(`meds.${draggedItem.name}`),
-            condition: t(`conditions.${targetPack.condition}`),
-          }),
-          'success',
-        );
-      } else {
-        setScore((prevScore) => Math.max(0, prevScore - 25));
-        showFeedback(
-          t('feedback.wrong', {
-            med: t(`meds.${draggedItem.name}`),
-            condition: t(`conditions.${targetPack.condition}`),
-          }),
-          'error',
-        );
-      }
+    const targetPack = blisterPacks.find((pack) => pack.id === packId);
+    const targetSlot = targetPack?.slots.find((slot) => slot.id === slotId);
+    if (!targetPack || !targetSlot || targetSlot.pill !== null) {
+      showFeedback(t('feedback.occupied'), 'warning');
       setDraggedItem(null);
+      return;
     }
+
+    const isCorrect = targetPack.correctMeds.includes(draggedItem.name);
+
+    const updatedPacks = blisterPacks.map((pack) =>
+      pack.id === packId
+        ? {
+            ...pack,
+            slots: pack.slots.map((slot) =>
+              slot.id === slotId
+                ? { ...slot, pill: draggedItem, isCorrect }
+                : slot,
+            ),
+          }
+        : pack,
+    );
+
+    setBlisterPacks(updatedPacks);
+    setTimeout(() => checkGameCompletion(updatedPacks), 100);
+
+    // Remove the pill from available meds regardless of correctness
+    setMedsList((prev) => prev.filter((m) => m.id !== draggedItem.id));
+
+    if (isCorrect) {
+      increaseScore(50);
+      showFeedback(
+        t('feedback.correct', {
+          med: t(`meds.${draggedItem.name}`),
+          condition: t(`conditions.${targetPack.condition}`),
+        }),
+        'success',
+      );
+    } else {
+      increaseScore(-25);
+      showFeedback(
+        t('feedback.wrong', {
+          med: t(`meds.${draggedItem.name}`),
+          condition: t(`conditions.${targetPack.condition}`),
+        }),
+        'error',
+      );
+    }
+    setDraggedItem(null);
   };
 
-  const removePillFromSlot = (packId: number, slotId: number): void => {
-    setBlisterPacks((prevPacks) =>
-      prevPacks.map((pack) =>
-        pack.id === packId
-          ? {
-              ...pack,
-              slots: pack.slots.map((slot) =>
-                slot.id === slotId
-                  ? { ...slot, pill: null, isCorrect: null }
-                  : slot,
-              ),
-            }
-          : pack,
-      ),
-    );
-    setScore((prevScore) => Math.max(0, prevScore - 10));
+  const handleDragStart = (
+    e: React.DragEvent<HTMLDivElement>,
+    med: Medication,
+  ) => {
+    setDraggedItem(med);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const removePillFromSlot = (packId: number, slotId: number) => {
+    let removedPill: Medication | null = null;
+    const updatedPacks = blisterPacks.map((pack) => {
+      if (pack.id !== packId) return pack;
+
+      return {
+        ...pack,
+        slots: pack.slots.map((slot) => {
+          if (slot.id === slotId && slot.pill) {
+            removedPill = slot.pill; // store pill to add back later
+            return { ...slot, pill: null, isCorrect: null };
+          }
+          return slot;
+        }),
+      };
+    });
+
+    const updatedMedsList = removedPill ? [...medsList, removedPill] : medsList;
+
+    setBlisterPacks(updatedPacks);
+    setMedsList(updatedMedsList);
+
+    increaseScore(-10);
     setGameCompleted(false);
     showFeedback(t('feedback.removed'), 'warning');
   };
-
-  const resetGame = (): void => {
-    setBlisterPacks(
-      blisterPacks.map((pack) => ({
+  const resetGame = () => {
+    setBlisterPacks((prev) =>
+      prev.map((pack) => ({
         ...pack,
         slots: pack.slots.map((slot) => ({
           ...slot,
@@ -230,8 +194,18 @@ const MedicalPillGame: React.FC = () => {
         })),
       })),
     );
+    setMedsList(availableMeds);
     setScore(0);
     setGameCompleted(false);
+  };
+
+  const openHowToPlay = () => {
+    setIsHowToPlayOpen(true);
+    if (!hasOpenedHowToPlay) setHasOpenedHowToPlay(true);
+  };
+
+  const changeHowToPlayShow = (open: boolean) => {
+    setIsHowToPlayOpen(open);
   };
 
   const howToPlayTranslations = {
@@ -248,43 +222,24 @@ const MedicalPillGame: React.FC = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-teal-600 p-4`}
-    >
+    <div className="min-h-screen">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-6 text-center">
-          <h1 className="mb-3 text-3xl font-bold text-white drop-shadow-lg md:text-4xl">
-            🏥 {t('title')} 💊
-          </h1>
-          <p className="mb-4 text-lg text-white/90 md:text-xl">
-            {t('instructions')}
-          </p>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <div className="rounded-lg bg-white/20 px-6 py-3 backdrop-blur-sm">
-              <span className="text-xl font-bold text-white md:text-2xl">
-                {t('score', { score })}
-              </span>
-              {gameCompleted && (
-                <div className="mt-1 text-sm text-green-200">
-                  {t('gameComplete')}
-                </div>
-              )}
-            </div>
-            <button
-              onClick={resetGame}
-              className="rounded-lg bg-white/20 px-6 py-3 font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white/30"
-            >
-              {t('reset')}
-            </button>
-          </div>
-        </div>
+        {/* Header section */}
+        <GameControls
+          score={score}
+          gameCompleted={gameCompleted}
+          resetGame={resetGame}
+          openHowToPlay={openHowToPlay}
+          hasOpenedHowToPlay={hasOpenedHowToPlay}
+        />
 
+        {/* Medications */}
         <div className="mb-6">
           <h2 className="mb-4 text-center text-xl font-bold text-white md:text-2xl">
             {t('availableMeds')}
           </h2>
           <div className="flex flex-wrap justify-center gap-3 rounded-xl bg-white/10 p-4 backdrop-blur-sm">
-            {availableMeds.map((med) => (
+            {medsList.map((med) => (
               <MedicationPill
                 key={med.id}
                 med={med}
@@ -295,7 +250,8 @@ const MedicalPillGame: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid-auto mx-auto grid auto-rows-fr grid-cols-2 gap-6 lg:grid-cols-4">
+        {/* Blister Packs */}
+        <div className="grid-auto mx-auto grid auto-rows-fr grid-cols-2 gap-6 gap-y-3 lg:grid-cols-4 lg:gap-4">
           {blisterPacks.map((pack) => (
             <BlisterPackComponent
               key={pack.id}
@@ -308,24 +264,12 @@ const MedicalPillGame: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-6 text-center">
-          <HowToPlay translations={howToPlayTranslations} />
-        </div>
-
-        <div className="mt-4 flex gap-4">
-          <button
-            onClick={() => changeLanguage('en')}
-            className="rounded bg-white/20 px-4 py-2 text-white"
-          >
-            English
-          </button>
-          <button
-            onClick={() => changeLanguage('fa')}
-            className="rounded bg-white/20 px-4 py-2 text-white"
-          >
-            فارسی
-          </button>
-        </div>
+        {/* Instructions Modal */}
+        <HowToPlay
+          translations={howToPlayTranslations}
+          open={isHowToPlayOpen}
+          onOpenChange={changeHowToPlayShow}
+        />
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ const BlisterSlot: React.FC<BlisterSlotProps> = ({
       className="flex justify-center"
     >
       <div
-        className={`relative flex h-14 w-48 items-center justify-center rounded-2xl border-2 transition-all duration-200 ${
+        className={`relative flex h-12 w-48 items-center justify-center rounded-2xl border-2 transition-all duration-200 ${
           slot.pill === null
             ? 'border-gray-500 bg-gradient-to-b from-gray-50 to-gray-200 shadow-inner hover:border-blue-400 hover:from-blue-50 hover:to-blue-200'
             : slot.isCorrect === true
@@ -50,7 +50,7 @@ const BlisterSlot: React.FC<BlisterSlotProps> = ({
       >
         <div className="pointer-events-none absolute inset-1 rounded-xl bg-gradient-to-b from-white/30 to-transparent"></div>
         {slot.pill === null && (
-          <div className="flex items-center text-xs font-medium text-gray-500">
+          <div className="flex items-center gap-2 text-xs font-medium text-gray-500">
             <div className="mr-2 h-2 w-2 rounded-full bg-gray-400"></div>
             {t('dropHere')}
           </div>
@@ -72,7 +72,7 @@ const BlisterSlot: React.FC<BlisterSlotProps> = ({
               {slot.isCorrect === true && <span className="ml-2">✅</span>}
               {slot.isCorrect === false && <span className="ml-2">❌</span>}
             </div>
-            <div className="absolute top-0.5 left-2 h-1.5 w-1.5 rounded-full bg-white/50"></div>
+            <div className="absolute top-1 left-2 h-1.5 w-1.5 rounded-full bg-white/50"></div>
           </div>
         )}
       </div>
