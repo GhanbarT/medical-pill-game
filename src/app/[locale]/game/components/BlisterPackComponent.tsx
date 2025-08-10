@@ -6,20 +6,20 @@ import BlisterSlot from './BlisterSlot';
 
 type BlisterPackProps = {
   pack: BlisterPack;
-  onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDrop: (
-    e: React.DragEvent<HTMLDivElement>,
-    packId: number,
-    slotId: number,
-  ) => void;
+  /* onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
+   onDrop: (
+     e: React.DragEvent<HTMLDivElement>,
+     packId: number,
+     slotId: number,
+   ) => void;*/
   removePillFromSlot: (packId: number, slotId: number) => void;
   getColorClasses: (color: string) => string;
 };
 
 const BlisterPackComponent: React.FC<BlisterPackProps> = ({
   pack,
-  onDragOver,
-  onDrop,
+  /*onDragOver,
+                                                            onDrop,*/
   removePillFromSlot,
   getColorClasses,
 }: BlisterPackProps) => {
@@ -45,8 +45,8 @@ const BlisterPackComponent: React.FC<BlisterPackProps> = ({
               key={slot.id}
               slot={slot}
               packId={pack.id}
-              onDragOver={onDragOver}
-              onDrop={onDrop}
+              /*onDragOver={onDragOver}
+              onDrop={onDrop}*/
               removePillFromSlot={removePillFromSlot}
               getColorClasses={getColorClasses}
             />

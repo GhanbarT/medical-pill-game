@@ -17,7 +17,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-4 z-50 mx-auto mb-4 flex w-full max-w-7xl items-center justify-between gap-4 rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-white shadow-lg backdrop-blur-md transition-all duration-300">
+    <header className="sticky top-2 z-50 mx-auto mb-4 flex w-full max-w-7xl items-center justify-between gap-4 rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-white shadow-lg backdrop-blur-md transition-all duration-300">
       {/* Title */}
       <div className="flex items-center gap-2">
         <h1 className="text-xl font-semibold tracking-tight drop-shadow-md sm:text-xl md:text-2xl lg:text-2xl">
