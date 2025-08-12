@@ -17,7 +17,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 
 import BlisterPackComponent from './components/BlisterPackComponent';
-import { GameControls } from './components/GameControls';
+import GameControls from './components/GameControls';
 import HowToPlay from './components/HowToPlay';
 import MedicationPill from './components/MedicationPill';
 import {

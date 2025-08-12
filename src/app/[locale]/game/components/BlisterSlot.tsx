@@ -35,6 +35,11 @@ const BlisterSlot: React.FC<BlisterSlotProps> = ({
   const wrongCls =
     'border-red-500 bg-gradient-to-b from-red-50 to-red-200 shadow-inner';
 
+  const baseShadow =
+    slot.pill === null
+      ? 'inset 0 3px 8px rgba(0,0,0,0.12), inset 0 -2px 4px rgba(255,255,255,0.8)'
+      : 'inset 0 2px 6px rgba(0,0,0,0.12)';
+
   return (
     <div ref={setNodeRef} className="flex justify-center">
       <div
@@ -44,12 +49,12 @@ const BlisterSlot: React.FC<BlisterSlotProps> = ({
             : slot.isCorrect === true
               ? correctCls
               : wrongCls
-        } ${isOver && slot.pill === null ? 'ring-2 ring-blue-300' : ''}`}
+        }`}
         style={{
           boxShadow:
-            slot.pill === null
-              ? 'inset 0 3px 8px rgba(0,0,0,0.12), inset 0 -2px 4px rgba(255,255,255,0.8)'
-              : 'inset 0 2px 6px rgba(0,0,0,0.12)',
+            isOver && slot.pill === null
+              ? `${baseShadow}, 0 0 0 2px #93c5fd` // blue-300 ring
+              : baseShadow,
         }}
       >
         <div className="pointer-events-none absolute inset-1 rounded-xl bg-gradient-to-b from-white/30 to-transparent"></div>

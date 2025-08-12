@@ -11,7 +11,7 @@ type GameControlsProps = {
   hasOpenedHowToPlay: boolean;
 };
 
-export const GameControls: React.FC<GameControlsProps> = ({
+const GameControls: React.FC<GameControlsProps> = ({
   score,
   gameCompleted,
   resetGame,
@@ -63,3 +63,5 @@ export const GameControls: React.FC<GameControlsProps> = ({
     </div>
   );
 };
+
+export default GameControls;

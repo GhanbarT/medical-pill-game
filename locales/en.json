@@ -1,6 +1,7 @@
 {
   "game": {
     "title": "Medical Pill Sorting Game",
+    "language": "Language",
     "instructions": "Match the correct medications to their medical conditions!",
     "score": "Score: {score}",
     "reset": "Reset Game",
